@@ -11,7 +11,13 @@ class App extends Component {
       smurfs: []
     };
   }
-
+	addToDB = (smurf) => {
+		axios.post(
+			"https://lambda-school-1-zoverlvx.c9users.io:8080/smurfs",
+			smurf
+		).then(res => this.setState({smurfs: res.data}))
+		.catch(err => console.log(err))
+	}
 	componentDidMount() {
 		axios.get("https://lambda-school-1-zoverlvx.c9users.io:8080/smurfs")
 		.then(res => this.setState({smurfs: res.data}))
@@ -23,7 +29,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <SmurfForm />
+        <SmurfForm addToDB={this.addToDB}/>
         <Smurfs smurfs={this.state.smurfs} />
       </div>
     );
