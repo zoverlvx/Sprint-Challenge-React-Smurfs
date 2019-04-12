@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import './App.css';
+import Header from "./components/Header";
 import SmurfForm from './components/SmurfForm';
 import Smurfs from './components/Smurfs';
 
@@ -15,7 +16,10 @@ class App extends Component {
 		axios.post(
 			"https://lambda-school-1-zoverlvx.c9users.io:8080/smurfs",
 			smurf
-		).then(res => this.setState({smurfs: res.data}))
+		).then(res => {
+			this.setState({smurfs: res.data})
+			console.log(this.state);
+		})
 		.catch(err => console.log(err))
 	}
 	componentDidMount() {
@@ -29,6 +33,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+		<Header/>
         <SmurfForm addToDB={this.addToDB}/>
         <Smurfs smurfs={this.state.smurfs} />
       </div>
