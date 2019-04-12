@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Route} from "react-router-dom";
 import axios from "axios";
 import './App.css';
 import Header from "./components/Header";
@@ -12,6 +13,13 @@ class App extends Component {
       smurfs: []
     };
   }
+	removeFromDB = (id) => {
+		axios.delete(
+			`https://lambda-school-1-zoverlvx.c9users.io:8080/smurfs/${id}`
+		)
+		.then(res => this.setState({smurfs: res.data}))
+		.catch(err => console.log(err))
+	}
 	addToDB = (smurf) => {
 		axios.post(
 			"https://lambda-school-1-zoverlvx.c9users.io:8080/smurfs",
@@ -34,8 +42,14 @@ class App extends Component {
     return (
       <div className="App">
 		<Header/>
-        <SmurfForm addToDB={this.addToDB}/>
-        <Smurfs smurfs={this.state.smurfs} />
+		<Route
+			exact path="/"
+			render={() => <Smurfs removeFromDB={this.removeFromDB} smurfs={this.state.smurfs} />}
+		/>
+		<Route
+			exact path="/smurf-form"
+			render={() => <SmurfForm addToDB={this.addToDB} />}
+		/>
       </div>
     );
   }
